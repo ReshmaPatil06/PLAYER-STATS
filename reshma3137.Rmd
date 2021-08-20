@@ -1,0 +1,515 @@
+---
+title: "player1234567"
+output: html_document
+---
+
+```{r}
+df1 = read.csv('map_pick_stats.csv')
+head(df1)
+
+df1[,c('Map','Total')]
+
+names(df1)[2]<-'Total_picked'
+print(df1)
+df2=read.csv('banned_maps_stats.csv')
+print(df2)
+
+df3=read.csv('player_stats.csv')
+df3
+
+df4=read.csv('side_pick_stats.csv')
+print(df4)
+
+
+df6=df1[,c(1,2)]
+df6
+
+df7=df2[,c(1,2)]
+df7
+
+df8=merge(x=df6,y=df7,by="Map")
+df8
+df9=merge(x=df8,y=df4,by="Map")
+df9
+
+barplot(height = df9$Total,names.arg = df9$Map)
+library(ggplot2)
+ggplot(data=df7, mapping = aes(x=as.factor(Map),y=Total))+geom_bar(stat = "identity")+labs(x="Map")
+barplot(height=df7$Total,col = rgb(0.8,0.1,0.1,0.6),xlab = "Map", ylab="Total_banned",main="no.of             banned",ylim=c(0,10))
+barplot(height = df9$Total_picked,names.arg = df9$Map)
+barplot(height = df9$Atk.Wins,names.arg = df9$Map)
+barplot(height = df9$Def.Wins,names.arg = df9$Map)
+
+dimnames(x=df3)
+dimnames(x=df9)
+summary(df9)
+summary(df3)
+
+df10=df9
+df10
+names(df10)[2]<-'TP'
+names(df10)[3]<-'TB'
+names(df10)[4]<-'AW'
+names(df10)[5]<-'DW'
+df10
+boxplot(df10$TP)
+boxplot(df10$TB,df10$TP,col = "red")
+
+boxplot(df10$AW,df10$DW,col = "purple")
+
+
+boxplot(df10$AW,
+main = "No. of banned",
+xlab = "Map",
+ylab = "TB",
+col = "orange",
+border = "brown",
+horizontal = TRUE,
+notch = FALSE)
+
+
+
+
+boxplot(df10$TB,
+        df10$TP,
+main = " Multiple boxplot",
+xlab = "total_picked",
+ylab = "total_banned",
+col = "purple",
+border = "brown",
+horizontal = TRUE,
+notch = FALSE
+)
+
+ggplot(data = df2, aes(x=Map,y=Total, fill=Map)) + 
+  geom_boxplot()+
+  scale_color_brewer(palette="Dark2") + 
+  geom_jitter(shape=10, position=position_jitter(0.2))+
+  labs(title = 'multiple boxplot',
+       y='Total_banned',x='Map')
+
+
+
+
+
+
+```
+
+```{r}
+#central tendency TP
+length(df10)
+mean(df10$TP)
+median(df10$TP)
+var(df10$TP)
+sd(df10$TP)
+
+#central tendency TB
+length(df10$TB)
+mean(df10$TB)
+median(df10$TB)
+var(df10$TB)
+sd(df10$TB)
+
+#central tendency AW
+length(df10$AW)
+mean(df10$AW)
+median(df10$AW)
+var(df10$AW)
+sd(df10$AW)
+
+#central tendency DW
+length(df10$DW)
+mean(df10$DW)
+median(df10$DW)
+var(df10$DW)
+sd(df10$DW)
+
+head(df3)
+class(df3)
+class(df3$Player)
+class(df3$Agents)
+class(df3$K)
+class(dimnames(df3))
+tail(df3)
+summary(df3)
+
+
+
+summary(df3$K)
+summary(df3$D)
+summary(df3$A)
+summary(df3$KD)
+summary(df3$KDA)
+summary(df3$ACS.Map)
+
+median(df3$K)
+median(df3$D)
+median(df3$A)
+median(df3$KD)
+mode(df3$K)
+mode(df3$D)
+mode(df3$A)
+mode(df3$KD)
+var(df3$K)
+var(df3$D)
+var(df3$A)
+sd(df3$K)
+sd(df3$D)
+sd(df3$A)
+quantile(df3$K)
+quantile(df3$D)
+quantile(df3$A)
+fivenum(df3$KDA)
+
+
+var.test(df3$K, df3$D)
+var.test(df3$K.Map, df3$D.Map)
+var.test(df3$D, df3$A)
+var.test(df3$D.Map, df3$A.Map)
+
+str(df3)
+
+head(structure(df3))
+ls.str(df3)
+ls.str(pattern = 'df3')
+names(df3)
+colnames(df3)
+dimnames(df3)
+dim(df3)
+length(df3)
+
+tdf = attach(df3)
+tdf
+
+max(df3$KDA)
+max(df3$ACS.Map)
+min(df3$KDA)
+min(df3$ACS.Map)
+
+head(stack(df3))
+head(sort(df3$Maps))
+head(sort(df3$ACS.Map))
+head(order(df3$KDA))
+head(rank(df3$KDA), n=10)
+head(cumsum(df3$KDA))
+head(cummax(df3$KDA))
+head(cummin(df3$KDA))
+head(cumprod(df3$KDA))
+table(df3$KDA)
+head(as.table(df3$KDA))
+
+
+#To check whether the data extracted is data frame or not
+is.data.frame(df3)
+is.table(df)
+
+#The class() command can form the basis of a logical test by using the if() command in the following manner:
+if(class(df) == 'data.frame') TRUE else FALSE
+#The seq_along() command creates a simple index
+seq_along(df3)
+
+stem(df3$KDA)
+stem(df3$ACS.Map)
+
+stem(df3$KDA, scale = 2)
+with(df3, stem(df3$KDA[df3$Country == 'South Korea']))
+
+hist(df3$Maps)
+hist(df3$KDA, col = 'red')
+hist(df3$ACS.Map, col = 'purple')
+hist(df3$K.Map, col= 'green')
+hist(df3$D.Map, col = 'pink')
+hist(df3$A.Map, col = 'blue')
+
+hist(df3$KDA, col = 'lightblue', xlab = 'ACS.Map', ylim = c(1,14), freq = FALSE)
+
+plot(density(df3$KDA))
+plot(density(df3$ACS.Map))
+
+hist(df3$KDA, freq = F)
+lines(density(df3$KDA), lty = 2)
+lines(density(df3$KDA, k = 'rectangular'))
+
+
+head(rnorm(df3$KDA, mean = 0, sd = 1))
+head(pnorm(df3$Maps, mean = 0, sd = 1))
+head(qnorm(df3$K.Map, mean = 0, sd = 1))
+qqnorm(df3$KDA)
+
+
+qqnorm(df3$KDA, main = 'QQ plot', xlab = 'KDA', 
+ylab = 'Quantiles for df$KDA')
+qqline(df3$KDA, lwd = 2, lty = 2)
+
+
+
+
+```
+
+```{r}
+qqplot(df3$Maps, df3$KDA)
+qqplot(df3$KDA, df3$KD)
+qqplot(df3$K, df3$D)
+qqplot(df3$K, df3$A)
+qqplot(df3$D, df3$A)
+qqplot(df3$K.Map, df3$A.Map)
+qqplot(df3$K.Map, df3$D.Map)
+qqplot(df3$KDA, df3$ACS.Map)
+
+qqp = qqplot(df3$Maps, df3$KDA)
+abline(lm(qqp$y ~ qqp$x))
+
+
+
+```
+
+```{r}
+#t.test(df3$Maps, df3$KDA)
+t.test(df3$Maps, df3$KDA, var.equal = TRUE)
+t.test(df3$KDA, mu = 5)
+t.test(df3$KDA, mu = 5, alternative = 'greater')
+t.test(df3$KDA ~ df3$Country, data = df3, subset = df3$Country %in% c('Brazil' , 'South Korea'))
+
+
+wilcox.test(df3$Maps, df3$KDA)
+cor(df3$Maps, df3$KDA)
+x = cov(df3$Maps, df3$KDA)
+x
+v = as.matrix(x)
+cov2cor(v)
+cor.test(df3$Maps, df3$KDA)
+chisq.test(df3$Maps)
+boxplot(df3$KDA)
+boxplot(df3$Maps)
+boxplot(df3$Maps, df3$KDA)
+boxplot(df3$KDA ~ df3$Country, data = df3,col='pink')
+boxplot(df3$Maps ~ df3$Player, data = df3, col='red')
+boxplot(df3$KDA ~ df3$Team, data = df3, col='green')
+boxplot(df3$Maps ~ df3$Agents, data = df3, col='brown')
+boxplot(df3$KDA ~ df3$ACS.Map, data = df3)
+
+boxplot(df3$K ~ df3$Agents, data = df3)
+
+
+
+
+
+
+```
+
+```{r}
+library(dplyr)
+##Attaching package: 'dplyr'
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+
+
+temp = df3 %>% filter(df3$Country == "Brazil")
+plot(temp$KDA, temp$Maps, pch = 25)
+
+with(df3, plot(df3$KDA[df3$Country == 'South Korea'], pch = 0))
+
+with(df3, (df3$KDA[df3$Country == 'Paris']))
+pairs(~ KDA + Maps, data = temp)
+plot(temp$KDA, type = 'l' )
+plot(temp$K, type = 'l' )
+plot(temp$KDA, type = 'b')
+pie(temp$KDA, labels = 'kill death assist')
+pie(temp$Maps, labels = 'Maps')
+dotchart(temp$KDA)
+barplot(temp$K)
+title(xlab = 'kill', ylab = 'assist', col='pink')
+box()
+
+
+
+barplot(temp$D)
+title(xlab = 'Brazil', ylab = 'D')
+box()
+
+```
+```{r}
+table(df3$Agents)
+
+
+barplot(temp$KDA, horiz = T)
+title(xlab = 'player', ylab = 'kda', col='yellow')
+box()
+
+
+```
+
+```{r}
+temp.aov = na.omit(aov(temp$KDA ~ temp$ACS.Map, data = temp))
+temp.aov
+```
+
+```{r}
+summary(temp.aov)
+```
+
+```{r}
+toway = aov(KDA ~ ACS.Map * Maps, data = temp)
+toway
+
+toway = aov(Maps ~ ACS.Map * KDA, data = temp)
+toway
+```
+
+```{r}
+factor(df3$Agents)
+```
+
+```{r}
+objects(df3)
+
+
+ls(df3)
+
+
+dflm = lm(A/Maps ~ A, data = df3)
+dflm
+
+
+cor.test(df3$K,df3$A, data = df3)
+
+
+coef(dflm)
+
+
+confint(dflm)
+
+
+head(fitted(dflm))
+
+
+head(residuals(dflm))
+
+
+formula(dflm)
+
+
+dflm$call
+
+
+```
+
+```{r}
+formula(df3)
+
+
+df3.Maps = apply(df3[,10:11], 2, mean)
+df3.Maps
+
+
+df3.sd = apply(df3[ , 10:11], 2, sd)
+df3.sd
+
+
+df3.s = apply(df3[,10:11], 2, sum)
+df3.s
+
+
+df3.1 = df3.s/df3.Maps
+df3.1
+
+
+df3.se = df3.sd / sqrt(df3.1)
+df3.se
+
+
+df3.Maps + df3.se
+
+
+max(df3.Maps + df3.se)
+
+
+df3.max = round(max(df3.Maps + df3.se) + 0.5, 0)
+df3.max
+
+
+```
+
+```{r}
+bp = barplot(df3.Maps, ylim = c(0, df3.max))
+
+
+bp
+
+
+bp = barplot(df3.Maps, ylim = c(0, df3.max))
+segments(bp, df3.Maps + df3.se, bp, df3.Maps - df3.se)
+segments(bp - 0.2, df3.Maps - df3.se, bp + 0.2, df3.Maps - df3.se)
+box()
+title(xlab = 'Type of map', ylab = 'KDA')
+
+plot(temp$D/Maps ~ temp$A/Maps, data = temp, pch = 21, ylab = 'D/Maps', xlab = 'A/Maps')
+
+points(temp$D ~ temp$A, data = temp, pch = 19)
+legend(x = 'topright', legend = c('D/Maps', 'A/Maps'), pch = c(21,19), bty = 
+'n')
+
+plot(1:10, 1:10, type = 'n')
+opt = par(cex = 1.5)
+text(1, 1, expression(hat(x)))
+text(2, 2, expression(alpha==x))
+text(3, 3, expression(beta==y))
+text(4, 4, expression(frac(x, y)))
+text(5, 5, expression(sum(x)))
+text(6, 6, expression(sum(x^2)))
+text(7, 7, expression(bar(x) == sum(frac(x[i], n), i==1, n)))
+text(8, 8, expression(sqrt(x)))
+text(9, 9, expression(sqrt(x, 3)))
+
+```
+
+```{r}
+#visualization
+plot(x=df3$Maps, y=df3$KDA, 
+     xlab="maps", ylab="kda",  main="player maps-kda")
+library(ggplot2)
+box <- ggplot(data=df3, aes(x=Maps, y=KDA))
+box + geom_boxplot(aes(fill=Country)) + 
+  ylab("kda") + ggtitle("player Boxplot") +
+  stat_summary(fun=mean, geom="point", shape=3, size=4) 
+
+
+histogram <- ggplot(data=df3, aes(x=KDA))
+histogram + geom_histogram(binwidth=0.2, color="black", aes(fill=Country)) + 
+  xlab("kda") +  ylab("Frequency") + ggtitle("Histogram of kda")
+
+histogram <- ggplot(data=df3, aes(x=A.Map))
+histogram + geom_histogram(binwidth=0.2, color="black", aes(fill=Country)) + 
+  xlab("maps") +  ylab("Frequency") + ggtitle("Histogram of maps")
+
+
+
+ggplot(data=df3, aes(x=K, y=D, color=K, group=Agents)) +
+  geom_line() + ggtitle("Growth curve for individual chicks")
+
+ggplot(data=df3, aes(x=KD, y=KDA, color=KD, group=Agents)) +
+  geom_line() + ggtitle("Growth curve for individual chicks")
+
+
+```
+```{r}
+d <- density(df3$KDA)
+hist(df3$KDA, breaks=12, prob=TRUE, xlab="kda", main="Histogram & Density Curve")
+lines(d, lty=2, col="blue")
+#polygon(d, col="yellow", border="blue")
+
+density <- ggplot(data=df3, aes(x=KDA))
+density + geom_histogram(binwidth=0.2, color="black", fill="steelblue", aes(y=..density..)) +
+  geom_density(stat="density", alpha=I(0.2), fill="blue") +
+  xlab("kda") +  ylab("Density") + ggtitle("Histogram & Density Curve")
+
+```
+
+
+
+
+
